@@ -2,9 +2,9 @@
 import Heading from '@/components/Heading';
 import ImageSimilaritySearch from '@/components/ImageSimilaritySearch';
 import SearchBox from '@/components/SearchBox';
-import { typesense } from '@/lib/typesense';
 import { _documentSchema } from '@/types/typesenseResponse';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 /*
  * This fetch the data from typesense server using dynamic page `slug` and pass it to `ImageSimilaritySearch` component
@@ -34,16 +34,14 @@ export default function ExploreSimilarImagesPage({
 
 async function getImageData(slug: string) {
   try {
-    const res = await typesense
-      .collections('DiffusionDB')
-      .documents()
-      .search({
-        q: '*',
-        filter_by: `id:${slug}`, // using the `:` operator to improve performance since `id` doesn't contain spaces
-        per_page: 1,
-        exclude_fields: ['embedding', 'out_of'], // reduce ~98.5% of bytes transferred over network
-      });
-    return res.hits?.[0].document as _documentSchema | undefined;
+    const { data } = await axios.post(`http://localhost:8080/api/search`, {
+      q: '*',
+      per_page: 1,
+      vector_query: `embedding:([], id:${slug})`,
+      exclude_fields: 'embedding, out_of', // reduce ~98.5% of bytes transferred over network
+    });
+    const res = data.results[0].hits[0];
+    return res.document as _documentSchema | undefined;
   } catch (error) {
     throw new Error('Failed to fetch data');
   }

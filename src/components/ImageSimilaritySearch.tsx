@@ -32,11 +32,11 @@ export default function ImageSimilaritySearch({
       >
         <Image
           className='h-full w-full object-contain'
-          src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL ?? 'https://ai-image-search-images.typesense.org'}/${imageData.image_name}`}
+          src={`${process.env.NEXT_PUBLIC_IMAGE_BASE_URL ?? imageData.url}`}
           width={0}
           height={0}
           sizes='80vw'
-          alt={imageData.prompt}
+          alt={imageData.title}
           unoptimized
         />
         <div className='pointer-events-none absolute inset-0 flex items-end justify-center bg-dark-900 bg-opacity-40 opacity-0 transition group-hover:opacity-100'>
@@ -49,7 +49,7 @@ export default function ImageSimilaritySearch({
           q: '*',
           per_page: 25,
           vector_query: `embedding:([], id:${imageData.id}, distance_threshold: 0.8, k: 100)`,
-          exclude_fields: ['embedding', 'out_of'], // reduce ~98.5% of bytes transferred over network
+          exclude_fields: 'embedding, out_of', // reduce ~98.5% of bytes transferred over network
         }}
       />
       {modalData && (

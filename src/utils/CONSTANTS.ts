@@ -11,22 +11,20 @@ export const SAMPLER = {
 };
 
 export const POPULAR_KEYWORDS = [
-  'cat',
-  'fire',
-  'ice',
-  'people',
-  'ocean',
-  'orange',
-  'winter',
-  'drawing',
-  'art',
-  'spaceship',
-  'galaxy',
-  'moon',
-  'neon',
-  'lake landscape',
-  'astronaut',
-  'house',
+  'dress',
+  'bag',
+  'phone',
+  'vacuum',
+  'watch',
+  'boot',
+  'shoe',
+  'scarf',
+  'charger',
+  'oven',
+  'ring',
+  'earings',
+  'necklace',
+  'bracelet',
 ];
 
 export const EXAMPLE_SEARCH_TERMS = [

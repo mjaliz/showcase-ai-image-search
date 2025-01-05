@@ -2,6 +2,8 @@ import { SearchResponseHit } from 'typesense/lib/Typesense/Documents';
 
 export type _documentSchema = {
   id: string;
+  url: string;
+  title: string;
   cfg: number;
   image_name: string;
   prompt: string;

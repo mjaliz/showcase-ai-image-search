@@ -2,6 +2,7 @@ import { typesense } from '@/lib/typesense';
 import { _hit } from '@/types/typesenseResponse';
 import { useEffect, useRef, useState } from 'react';
 import { SearchParams } from 'typesense/lib/Typesense/Documents';
+import axios from 'axios';
 
 /*
  * Search logic for <ImageSearch/>
@@ -21,13 +22,11 @@ export default function useImageSearch(searchParameters: SearchParams) {
     setIsLoading(true);
     page.current++;
     try {
-      const res = await typesense
-        .collections('DiffusionDB')
-        .documents()
-        .search({
-          ...searchParameters,
-          page: page.current,
-        });
+      const { data } = await axios.post(`http://localhost:8080/api/search`, {
+        ...searchParameters,
+        page: page.current,
+      });
+      const res = data.results[0];
       const isNoHitsReturned = res.hits?.length ? false : true;
       setIsLastPage(isNoHitsReturned);
       setHits((prev: _hit[]) => {
